@@ -2,6 +2,7 @@
 class MediMap {
     constructor() {
         this.terms = this.loadTerms();
+        this.idCounter = this.getNextId();
         this.init();
     }
 
@@ -9,6 +10,13 @@ class MediMap {
         this.setupEventListeners();
         this.renderTerms();
         this.updateStats();
+    }
+
+    getNextId() {
+        const maxId = this.terms.length > 0 
+            ? Math.max(...this.terms.map(t => t.id))
+            : 0;
+        return maxId + 1;
     }
 
     setupEventListeners() {
@@ -47,7 +55,7 @@ class MediMap {
         }
 
         const term = {
-            id: Date.now(),
+            id: this.idCounter++,
             name,
             definition,
             category,
@@ -110,16 +118,40 @@ class MediMap {
             return;
         }
 
-        container.innerHTML = termsToRender.map(term => `
-            <div class="term-card">
-                <div class="term-header">
-                    <h3 class="term-name">${this.escapeHtml(term.name)}</h3>
-                    <button class="delete-btn" onclick="medimap.deleteTerm(${term.id})">Delete</button>
-                </div>
-                <span class="term-category category-${term.category}">${term.category}</span>
-                <p class="term-definition">${this.escapeHtml(term.definition)}</p>
-            </div>
-        `).join('');
+        container.innerHTML = '';
+        termsToRender.forEach(term => {
+            const card = document.createElement('div');
+            card.className = 'term-card';
+            
+            const header = document.createElement('div');
+            header.className = 'term-header';
+            
+            const title = document.createElement('h3');
+            title.className = 'term-name';
+            title.textContent = term.name;
+            
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'delete-btn';
+            deleteBtn.textContent = 'Delete';
+            deleteBtn.addEventListener('click', () => this.deleteTerm(term.id));
+            
+            header.appendChild(title);
+            header.appendChild(deleteBtn);
+            
+            const categorySpan = document.createElement('span');
+            categorySpan.className = `term-category category-${term.category}`;
+            categorySpan.textContent = term.category;
+            
+            const definition = document.createElement('p');
+            definition.className = 'term-definition';
+            definition.textContent = term.definition;
+            
+            card.appendChild(header);
+            card.appendChild(categorySpan);
+            card.appendChild(definition);
+            
+            container.appendChild(card);
+        });
     }
 
     updateStats() {
@@ -188,12 +220,6 @@ class MediMap {
             notification.style.animation = 'slideOut 0.3s ease';
             setTimeout(() => notification.remove(), 300);
         }, 2000);
-    }
-
-    escapeHtml(text) {
-        const div = document.createElement('div');
-        div.textContent = text;
-        return div.innerHTML;
     }
 }
 
