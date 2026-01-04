@@ -110,11 +110,15 @@ class MediMap {
         const container = document.getElementById('termsContainer');
         
         if (termsToRender.length === 0) {
-            container.innerHTML = `
-                <div class="empty-state">
-                    <p>No medical terms found. ${this.terms.length > 0 ? 'Try adjusting your filters.' : 'Start by adding some above!'}</p>
-                </div>
-            `;
+            container.innerHTML = '';
+            const emptyState = document.createElement('div');
+            emptyState.className = 'empty-state';
+            const message = document.createElement('p');
+            message.textContent = this.terms.length > 0 
+                ? 'No medical terms found. Try adjusting your filters.' 
+                : 'No medical terms yet. Start by adding some above!';
+            emptyState.appendChild(message);
+            container.appendChild(emptyState);
             return;
         }
 
@@ -199,56 +203,17 @@ class MediMap {
     }
 
     showNotification(message) {
-        // Simple notification implementation
         const notification = document.createElement('div');
-        notification.style.cssText = `
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: #10b981;
-            color: white;
-            padding: 15px 25px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            z-index: 1000;
-            animation: slideIn 0.3s ease;
-        `;
+        notification.className = 'notification';
         notification.textContent = message;
         document.body.appendChild(notification);
 
         setTimeout(() => {
-            notification.style.animation = 'slideOut 0.3s ease';
+            notification.classList.add('notification-exit');
             setTimeout(() => notification.remove(), 300);
         }, 2000);
     }
 }
-
-// Add animations
-const style = document.createElement('style');
-style.textContent = `
-    @keyframes slideIn {
-        from {
-            transform: translateX(100%);
-            opacity: 0;
-        }
-        to {
-            transform: translateX(0);
-            opacity: 1;
-        }
-    }
-    
-    @keyframes slideOut {
-        from {
-            transform: translateX(0);
-            opacity: 1;
-        }
-        to {
-            transform: translateX(100%);
-            opacity: 0;
-        }
-    }
-`;
-document.head.appendChild(style);
 
 // Initialize the application
 const medimap = new MediMap();
