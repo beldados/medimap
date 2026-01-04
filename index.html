@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediMap - Medical Terminology Visualizer</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏥 MediMap</h1>
+            <p class="subtitle">Visualize and Type Your Medical Terminologies</p>
+        </header>
+
+        <main>
+            <section class="input-section">
+                <h2>Add Medical Term</h2>
+                <form id="termForm">
+                    <div class="form-group">
+                        <label for="termName">Medical Term:</label>
+                        <input type="text" id="termName" placeholder="e.g., Cardiology, Hypertension" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="termDefinition">Definition:</label>
+                        <textarea id="termDefinition" placeholder="Enter the definition or description" rows="3" required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="termCategory">Category:</label>
+                        <select id="termCategory" required>
+                            <option value="">Select a category</option>
+                            <option value="anatomy">Anatomy</option>
+                            <option value="disease">Disease/Condition</option>
+                            <option value="procedure">Procedure</option>
+                            <option value="medication">Medication</option>
+                            <option value="symptom">Symptom</option>
+                            <option value="specialty">Medical Specialty</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Add Term</button>
+                </form>
+            </section>
+
+            <section class="filter-section">
+                <h2>Filter & Search</h2>
+                <div class="filter-controls">
+                    <input type="text" id="searchInput" placeholder="Search terms...">
+                    <select id="categoryFilter">
+                        <option value="all">All Categories</option>
+                        <option value="anatomy">Anatomy</option>
+                        <option value="disease">Disease/Condition</option>
+                        <option value="procedure">Procedure</option>
+                        <option value="medication">Medication</option>
+                        <option value="symptom">Symptom</option>
+                        <option value="specialty">Medical Specialty</option>
+                        <option value="other">Other</option>
+                    </select>
+                    <button id="clearAll" class="btn btn-secondary">Clear All Terms</button>
+                </div>
+            </section>
+
+            <section class="visualization-section">
+                <h2>Medical Terms Visualization</h2>
+                <div class="stats">
+                    <div class="stat-card">
+                        <span class="stat-number" id="totalTerms">0</span>
+                        <span class="stat-label">Total Terms</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number" id="categoryCount">0</span>
+                        <span class="stat-label">Categories</span>
+                    </div>
+                </div>
+                
+                <div id="termsContainer" class="terms-grid">
+                    <div class="empty-state">
+                        <p>No medical terms yet. Start by adding some above!</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>MediMap - Your Medical Terminology Companion</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
